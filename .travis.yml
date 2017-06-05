@@ -17,7 +17,7 @@ before_install:
 
 script:
   - docker build -t $TRAVIS_REPO_SLUG:master .
-  - bash test.sh
+  - bash tests/test.sh
 
 after_script:
   - docker-compose -f tests/docker-compose.yml down
