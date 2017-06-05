@@ -1,0 +1,29 @@
+sudo: required
+
+env:
+  DOCKER_COMPOSE_VERSION: 1.13.0
+
+services:
+  - docker
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - docker-compose -f tests/docker-compose.yml up -d
+
+script:
+  - docker build $TRAVIS_REPO_SLUG:master .
+  - bash test.sh
+
+after_script:
+  - docker-compose -f tests/docker-compose.yml down
+
+after_success:
+  - >
+    if [ "$TRAVIS_BRANCH" == "master" ]; then
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      docker tag $TRAVIS_REPO_SLUG:master $TRAVIS_REPO_SLUG:latest
+      docker push $TRAVIS_REPO_SLUG:latest
+    fi

@@ -1,0 +1,19 @@
+version: "3.2"
+
+services:
+  server1:
+    image: thomasjpfan/ubuntu-python-systemd:latest
+    privileged: true
+    volumes:
+      - type: bind
+        source: /sys/fs/cgroup
+        target: /sys/fs/cgroup
+        read_only: true
+  server2:
+    image: thomasjpfan/ubuntu-python-systemd:latest
+    privileged: true
+    volumes:
+      - type: bind
+        source: /sys/fs/cgroup
+        target: /sys/fs/cgroup
+        read_only: true
