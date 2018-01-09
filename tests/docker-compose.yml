@@ -5,15 +5,9 @@ services:
     image: thomasjpfan/ubuntu-python-systemd:latest
     privileged: true
     volumes:
-      - type: bind
-        source: /sys/fs/cgroup
-        target: /sys/fs/cgroup
-        read_only: true
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
   server2:
     image: thomasjpfan/ubuntu-python-systemd:latest
     privileged: true
     volumes:
-      - type: bind
-        source: /sys/fs/cgroup
-        target: /sys/fs/cgroup
-        read_only: true
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro

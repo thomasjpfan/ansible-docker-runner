@@ -9,36 +9,39 @@ Ansible runner for testing playbooks with docker connection
 1. Set up hosts using docker-compose:
 
 ```yaml
-version: "3.2"
-
-services:
-  server1:
-    image: thomasjpfan/ubuntu-python-systemd:latest
-    privileged: true
-    volumes:
-      - type: bind
-        source: /sys/fs/cgroup
-        target: /sys/fs/cgroup
-        read_only: true
-  server2:
-    image: thomasjpfan/ubuntu-python-systemd:latest
-    privileged: true
-    volumes:
-      - type: bind
-        source: /sys/fs/cgroup
-        target: /sys/fs/cgroup
-        read_only: true
+docker-compose -f tests/docker-compose.yml up -d
 ```
 
-2. Mount volumes in `thomasjpfan/ansible-docker-runner` with your playbooks and run ansible commands:
+1. Mount volumes in `thomasjpfan/ansible-docker-runner` with your playbooks and run all
 
 ```bash
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
--v ${PWD}/tests:/tests \
-thomasjpfan/ansible-docker-runner:latest \
-ansible-playbook -c docker -i "tests_server1_1,tests_server2_1," /tests/playbook.yml
+docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
+  -v /var/run/docker.sock:/var/run/docker.sock:ro \
+  -v $PWD/dep_roles:/root/.ansible/roles \
+  thomasjpfan/ansible-docker-runner all
 ```
 
-Note that the names `tests_server1_2` and `test_server2_1` is the naming convention of docker-compose when the `docker-compose.yml` file in a folder named tests.
+1. Notice that `tests/playbook.yml` names the role under testing: `role_to_test`.
 
-When testing a role mount the current directory into `/etc/ansible/roles` and then target the `playbook.yml` for testing
+## Commands
+
+1. `lint`: Runs ansible-lint on `tests/playbook.yml`.
+1. `syntax-check`: Runs ansible-playbook --syntax-check on `tests/playbook.yml` with `tests/inventory`.
+1. `converge`: Runs ansible-playbook on `tests/playbook.yml` with `tests/inventory`.
+1. `idempotence`: Runs converge again and see if anthing changed.
+1. `test`: Runs test `tests/run_tests.sh`.
+1. `requirements`: Runs ansible-galaxy install on `tests/requirements.yml`.
+1. `all`: Runs `lint`, `syntax_check`, `requirements`, `converge`, `idempotence`.
+
+## Local Development
+
+For local development, one can start a shell:
+
+```bash
+docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
+  -v /var/run/docker.sock:/var/run/docker.sock:ro \
+  -v $PWD/dep_roles:/root/.ansible/roles -ti \
+  thomasjpfan/ansible-docker-runner /bin/sh
+```
+
+And run the commands prefixed with `entrypoint.sh`, for example: `entrypoint.sh lint`.

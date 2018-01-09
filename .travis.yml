@@ -1,14 +1,18 @@
 sudo: required
 
-env:
-  DOCKER_COMPOSE_VERSION: 1.13.0
-
 services:
   - docker
 
+env:
+  - DOCKER_COMPOSE_VERSION=1.18.0
+  - DOCKER_HUB_REPO=thomasjpfan/ansible-docker-runner
+
+addons:
+  apt:
+    packages:
+      - docker-ce
+
 before_install:
-  - sudo apt-get update
-  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
@@ -16,9 +20,12 @@ before_install:
   - docker-compose -f tests/docker-compose.yml up -d
 
 script:
-  - docker build -t $TRAVIS_REPO_SLUG:$TRAVIS_BRANCH .
-  - bash tests/test.sh $TRAVIS_BRANCH
-
+  - docker image build -t $DOCKER_HUB_REPO:$TRAVIS_BRANCH .
+  - >
+    docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
+      -v /var/run/docker.sock:/var/run/docker.sock:ro \
+      -v $PWD/dep_roles:/root/.ansible/roles \
+      $DOCKER_HUB_REPO:$TRAVIS_BRANCH all
 after_script:
   - docker-compose -f tests/docker-compose.yml down
 
@@ -26,6 +33,9 @@ after_success:
   - >
     if [ "$TRAVIS_BRANCH" == "master" ]; then
       docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-      docker tag $TRAVIS_REPO_SLUG:master $TRAVIS_REPO_SLUG:latest
-      docker push $TRAVIS_REPO_SLUG:latest
+      docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:latest
+      docker push $DOCKER_HUB_REPO:latest
+    elif [ "$TRAVIS_BRANCH" == "$TRAVIS_TAG" ]; then
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      docker push $DOCKER_HUB_REPO:$TRAVIS_TAG
     fi

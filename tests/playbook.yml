@@ -1,7 +1,5 @@
 ---
 
 - hosts: all
-  become: true
-  tasks:
-    - name: Ping them!
-      ping:
+  roles:
+    - role: role_to_test

@@ -1,0 +1,4 @@
+[all]
+
+tests_server1_1 ansible_connection=docker
+tests_server2_1 ansible_connection=docker
