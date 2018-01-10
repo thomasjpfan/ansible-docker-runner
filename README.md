@@ -29,7 +29,7 @@ docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
 1. `syntax-check`: Runs ansible-playbook --syntax-check on `tests/playbook.yml` with `tests/inventory`.
 1. `converge`: Runs ansible-playbook on `tests/playbook.yml` with `tests/inventory`.
 1. `idempotence`: Runs converge again and see if anthing changed.
-1. `test`: Runs test `tests/run_tests.sh`.
+1. `run_test`: Runs test `tests/run_tests.sh`.
 1. `requirements`: Runs ansible-galaxy install on `tests/requirements.yml`.
 1. `all`: Runs `lint`, `syntax_check`, `requirements`, `converge`, `idempotence`.
 
@@ -44,4 +44,4 @@ docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
   thomasjpfan/ansible-docker-runner /bin/sh
 ```
 
-And run the commands prefixed with `entrypoint.sh`, for example: `entrypoint.sh lint`.
+And run the commands prefixed with `cli`, for example: `cli lint`.

@@ -16,8 +16,8 @@ RUN apk --update add sudo && \
     rm -rf /var/cache/apk/* && \
     mkdir -p /etc/ansible/roles/role_to_test
 
-COPY entrypoint.sh /usr/local/bin
+COPY cli.sh /usr/local/bin/cli
 
 WORKDIR /etc/ansible/roles/role_to_test
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["cli"]
