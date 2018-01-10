@@ -38,7 +38,9 @@ after_success:
       ansible_v=$(grep "ENV ANSIBLE_VERSION" Dockerfile | awk '{{ print $3 }}')
       lint_v=$(grep "ENV ANSIBLE_LINT_VERSION" Dockerfile | awk '{{ print $3 }}')
       testinfra_v=$(grep "ENV TESTINFRA_VERSION" Dockerfile | awk '{{ print $3 }}')
-      tag="$docker-${docker_v}-ansible-${ansible_v}-lint-${lint_v}-testinfra-${testinfra_v}"
+      tag="docker-${docker_v}-ansible-${ansible_v}-lint-${lint_v}-testinfra-${testinfra_v}"
       docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:$tag
+      docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:latest
       docker push $DOCKER_HUB_REPO:$tag
+      docker push $DOCKER_HUB_REPO:latest
     fi
