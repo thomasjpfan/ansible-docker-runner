@@ -25,7 +25,6 @@ script:
   - >
     docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
       -v /var/run/docker.sock:/var/run/docker.sock:ro \
-      -v $PWD/dep_roles:/root/.ansible/roles \
       $DOCKER_HUB_REPO:$TRAVIS_BRANCH all
 after_script:
   - docker-compose -f tests/docker-compose.yml down
