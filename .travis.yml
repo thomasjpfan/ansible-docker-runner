@@ -34,9 +34,11 @@ after_success:
   - >
     if [ "$TRAVIS_BRANCH" == "master" ]; then
       docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-      docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:latest
-      docker push $DOCKER_HUB_REPO:latest
-    elif [ "$TRAVIS_BRANCH" == "$TRAVIS_TAG" ]; then
-      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-      docker push $DOCKER_HUB_REPO:$TRAVIS_TAG
+      docker_v=$(grep "FROM docker" Dockerfile | cut -d ':' -f2)
+      ansible_v=$(grep "ENV ANSIBLE_VERSION" Dockerfile | awk '{{ print $3 }}')
+      lint_v=$(grep "ENV ANSIBLE_LINT_VERSION" Dockerfile | awk '{{ print $3 }}')
+      testinfra_v=$(grep "ENV TESTINFRA_VERSION" Dockerfile | awk '{{ print $3 }}')
+      tag="$docker-${docker_v}-ansible-${ansible_v}-lint-${lint_v}-testinfra-${testinfra_v}"
+      docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:$tag
+      docker push $DOCKER_HUB_REPO:$tag
     fi
