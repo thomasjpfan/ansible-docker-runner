@@ -18,4 +18,6 @@ RUN apk --update add sudo && \
 
 COPY cli.sh /usr/local/bin/cli
 
+WORKDIR /etc/ansible/roles/role_to_test
+
 ENTRYPOINT ["cli"]

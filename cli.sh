@@ -8,7 +8,8 @@ red='\033[0;31m'
 green='\033[0;32m'
 neutral='\033[0m'
 
-root_test_dir="/etc/ansible/roles/role_to_test/tests"
+root_role_dir="/etc/ansible/roles/role_to_test"
+root_test_dir="${root_role_dir}/tests"
 playbook="${root_test_dir}/playbook.yml"
 inventory="${root_test_dir}/inventory"
 requirements="${root_test_dir}/requirements.yml"
