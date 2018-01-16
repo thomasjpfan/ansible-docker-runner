@@ -7,8 +7,9 @@ env:
   global:
     - DOCKER_COMPOSE_VERSION=1.18.0
     - DOCKER_HUB_REPO=thomasjpfan/ansible-docker-runner
-  - PY_VERSION=2
-  - PY_VERSION=3
+  matrix:
+    - PY_VERSION=2
+    - PY_VERSION=3
 
 addons:
   apt:
