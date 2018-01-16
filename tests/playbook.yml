@@ -1,5 +1,7 @@
 ---
 
 - hosts: all
+  vars:
+    - a_file_name: hello.txt
   roles:
     - role: role_to_test

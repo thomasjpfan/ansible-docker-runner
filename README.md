@@ -38,7 +38,8 @@ docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
 For local development, one can start a shell:
 
 ```bash
-docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
+docker run --rm -v $PWD:/etc/ansible/roles/role_to_test
+  --name runner \
   -v /var/run/docker.sock:/var/run/docker.sock:ro \
   -v $PWD/dep_roles:/root/.ansible/roles -ti \
   thomasjpfan/ansible-docker-runner /bin/sh

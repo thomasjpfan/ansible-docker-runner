@@ -14,6 +14,7 @@ playbook="${root_test_dir}/playbook.yml"
 inventory="${root_test_dir}/inventory"
 requirements="${root_test_dir}/requirements.yml"
 run_tests="${root_test_dir}/run_tests.sh"
+play_cmd="ansible-playbook -i ${inventory}"
 
 lint() {
 	printf "${green}Using ansible-lint to check syntax${neutral}\\n"
@@ -22,20 +23,19 @@ lint() {
 
 syntax_check() {
 	printf "${green}Checking ansible playbook syntax-check${neutral}\\n"
-	if [ "$#" -gt 1 ]; then
-		ansible-playbook "$@" "$playbook" --syntax-check
+	if [ ! -z "$@" ]; then
+		$play_cmd "$@" "$playbook" --syntax-check
 	else
-		ansible-playbook "$playbook" --syntax-check
+		$play_cmd "$playbook" --syntax-check
 	fi
 }
 
 converge() {
 	printf "${green}Running full playbook${neutral}\\n"
-	ansible-playbook "$playbook"
-	if [ "$#" -gt 1 ]; then
-		ansible-playbook "$@" "$playbook"
+	if [ ! -z "$@" ]; then
+		$play_cmd "$@" "$playbook"
 	else
-		ansible-playbook "$playbook"
+		$play_cmd "$playbook"
 	fi
 }
 
@@ -48,10 +48,10 @@ idempotence() {
 	printf "${green}Running playbook again (idempotence test)${neutral}\\n"
 	idempotence="$(mktemp)"
 
-	if [ "$#" -gt 1 ]; then
-		cmd="ansible-playbook ${@} ${playbook}"
+	if [ ! -z "$@" ]; then
+		cmd="${play_cmd} ${@} ${playbook}"
 	else
-		cmd="ansible-playbook ${playbook}"
+		cmd="${play_cmd} ${playbook}"
 	fi
 	$cmd | tee -a "$idempotence"
 	tail "$idempotence" \

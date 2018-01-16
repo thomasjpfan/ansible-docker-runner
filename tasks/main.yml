@@ -1,4 +1,6 @@
 ---
 
-- name: Ping them!
-  ping:
+- name: Create file
+  copy:
+    content: ""
+    dest: "/{{ a_file_name }}"
