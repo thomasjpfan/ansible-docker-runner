@@ -108,6 +108,7 @@ case "$cmd" in
 		converge "$args"
 		;;
 	idempotence)
+		converge "$args"
 		idempotence "$args"
 		;;
 	run_test)
