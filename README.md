@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/thomasjpfan/ansible-docker-runner.svg?branch=master)](https://travis-ci.org/thomasjpfan/ansible-docker-runner)
 
-Ansible runner for testing playbooks with docker connection
+Ansible runner for testing playbooks with docker connection.
 
 ## Usage
 

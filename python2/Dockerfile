@@ -4,8 +4,7 @@ ENV ANSIBLE_VERSION 2.4.2.0
 ENV TESTINFRA_VERSION 1.10.1
 ENV ANSIBLE_LINT_VERSION 3.4.20
 
-RUN apk --update add sudo && \
-    apk --update add python py-pip openssl ca-certificates && \
+RUN apk --update add sudo python py-pip openssl ca-certificates && \
     apk --update add --virtual build-dependencies \
     python-dev libffi-dev openssl-dev build-base && \
     pip install --upgrade pip cffi && \

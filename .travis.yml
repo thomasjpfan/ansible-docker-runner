@@ -7,6 +7,8 @@ env:
   global:
     - DOCKER_COMPOSE_VERSION=1.18.0
     - DOCKER_HUB_REPO=thomasjpfan/ansible-docker-runner
+  - PY_VERSION=2
+  - PY_VERSION=3
 
 addons:
   apt:
@@ -21,7 +23,8 @@ before_install:
   - docker-compose -f tests/docker-compose.yml up -d
 
 script:
-  - docker image build -t $DOCKER_HUB_REPO:$TRAVIS_BRANCH .
+  - docker image build -t $DOCKER_HUB_REPO:$TRAVIS_BRANCH -f \
+    python$PY_VERSION/Dockerfile .
   - >
     docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
       -v /var/run/docker.sock:/var/run/docker.sock:ro \
@@ -37,9 +40,7 @@ after_success:
       ansible_v=$(grep "ENV ANSIBLE_VERSION" Dockerfile | awk '{{ print $3 }}')
       lint_v=$(grep "ENV ANSIBLE_LINT_VERSION" Dockerfile | awk '{{ print $3 }}')
       testinfra_v=$(grep "ENV TESTINFRA_VERSION" Dockerfile | awk '{{ print $3 }}')
-      tag="docker-${docker_v}-ansible-${ansible_v}-lint-${lint_v}-testinfra-${testinfra_v}"
+      tag="docker-${docker_v}-py${PY_VERSION}-ansible-${ansible_v}-lint-${lint_v}-testinfra-${testinfra_v}"
       docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:$tag
-      docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:latest
       docker push $DOCKER_HUB_REPO:$tag
-      docker push $DOCKER_HUB_REPO:latest
     fi

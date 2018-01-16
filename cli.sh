@@ -22,12 +22,12 @@ lint() {
 
 syntax_check() {
 	printf "${green}Checking ansible playbook syntax-check${neutral}\\n"
-	ansible-playbook -i "$inventory" "$playbook" --syntax-check
+	ansible-playbook -i "$inventory" "$playbook" --syntax-check "$@"
 }
 
 converge() {
 	printf "${green}Running full playbook${neutral}\\n"
-	ansible-playbook -i "$inventory" "$playbook"
+	ansible-playbook -i "$inventory" "$playbook" "$@"
 }
 
 run_test() {
@@ -38,7 +38,7 @@ run_test() {
 idempotence() {
 	printf "${green}Running playbook again (idempotence test)${neutral}\\n"
 	idempotence="$(mktemp)"
-	ansible-playbook -i "$inventory" "$playbook" | tee -a "$idempotence"
+	ansible-playbook -i "$inventory" "$playbook" "$@" | tee -a "$idempotence"
 	tail "$idempotence" \
 		| grep -q 'changed=0.*failed=0' \
 		&& (printf "${green}Idempotence test: pass${neutral}\\n") \
@@ -50,16 +50,31 @@ requirements() {
 		printf "${green}Requirements file detected; installing dependencies.${neutral}\\n"
 		ansible-galaxy install -r "$requirements"
 	fi
-
 }
+
+usage() {
+	echo "usage: $0 (lint|syntax-check|requirments|converge|idempotence|run_test|all)"
+	echo "  lint: Runs ansible-lint on tests/playbook.yml"
+	echo "  syntax-check: Runs ansible-playbook --syntax-check on tests/playbook.yml"
+	echo "  requirements: Imports requirements from ansible galaxy"
+	echo "  converge: Runs tests/playbook.yml"
+	echo "  idempotence: Runs ansible-playbook again and fails if anything changes"
+	echo "  run_test: Runs pytest on tests folder"
+	echo "  all: Runs all of the above"
+	exit 1
+}
+
+cmd="$1"
+shift 1
+args="$*"
 
 case "$1" in
 	all)
 		lint
-		syntax_check
+		syntax_check "$args"
 		requirements
-		converge
-		idempotence
+		converge "$args"
+		idempotence "$args"
 		run_test
 		;;
 	lint)
@@ -72,16 +87,16 @@ case "$1" in
 		requirements
 		;;
 	converge)
-		converge
+		converge "$args"
 		;;
 	idempotence)
-		converge
-		idempotence
+		converge "$args"
+		idempotence "$args"
 		;;
 	run_test)
 		run_test
 		;;
 	*)
-		exec "$@"
+		usage
 		;;
 esac
