@@ -80,10 +80,11 @@ usage() {
 }
 
 cmd="$1"
-if [ ! "$#" -eq 0 ]; then
+args=${ANSIBLE_PLAYBOOK_ARGS:=}
+if [ "$#" -gt 1 ]; then
 	shift 1
+	args="$*"
 fi
-args="$*"
 
 case "$cmd" in
 	all)

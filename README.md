@@ -46,3 +46,8 @@ docker run --rm -v $PWD:/etc/ansible/roles/role_to_test
 ```
 
 And run the commands prefixed with `cli`, for example: `cli lint`.
+
+## Extra Features
+
+- Setting `ANSIBLE_PLAYBOOK_ARGS` in the env will be passed along to the `ansible-playbook` cli.
+- Any arguments after the command will be passed along to the `ansible-playbook` cli and overwrites `ANSIBLE_PLAYBOOK_ARGS`
