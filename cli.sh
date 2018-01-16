@@ -22,12 +22,21 @@ lint() {
 
 syntax_check() {
 	printf "${green}Checking ansible playbook syntax-check${neutral}\\n"
-	ansible-playbook -i "$inventory" "$playbook" --syntax-check "$@"
+	if [ "$#" -gt 1 ]; then
+		ansible-playbook "$@" "$playbook" --syntax-check
+	else
+		ansible-playbook "$playbook" --syntax-check
+	fi
 }
 
 converge() {
 	printf "${green}Running full playbook${neutral}\\n"
-	ansible-playbook -i "$inventory" "$playbook" "$@"
+	ansible-playbook "$playbook"
+	if [ "$#" -gt 1 ]; then
+		ansible-playbook "$@" "$playbook"
+	else
+		ansible-playbook "$playbook"
+	fi
 }
 
 run_test() {
@@ -38,7 +47,13 @@ run_test() {
 idempotence() {
 	printf "${green}Running playbook again (idempotence test)${neutral}\\n"
 	idempotence="$(mktemp)"
-	ansible-playbook -i "$inventory" "$playbook" "$@" | tee -a "$idempotence"
+
+	if [ "$#" -gt 1 ]; then
+		cmd="ansible-playbook ${@} ${playbook}"
+	else
+		cmd="ansible-playbook ${playbook}"
+	fi
+	$cmd | tee -a "$idempotence"
 	tail "$idempotence" \
 		| grep -q 'changed=0.*failed=0' \
 		&& (printf "${green}Idempotence test: pass${neutral}\\n") \
@@ -65,10 +80,12 @@ usage() {
 }
 
 cmd="$1"
-shift 1
+if [ ! "$#" -eq 0 ]; then
+	shift 1
+fi
 args="$*"
 
-case "$1" in
+case "$cmd" in
 	all)
 		lint
 		syntax_check "$args"
@@ -81,7 +98,7 @@ case "$1" in
 		lint
 		;;
 	syntax-check)
-		syntax_check
+		syntax_check "$args"
 		;;
 	requirements)
 		requirements
