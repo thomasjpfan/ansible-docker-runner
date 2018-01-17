@@ -8,10 +8,12 @@ red='\033[0;31m'
 green='\033[0;32m'
 neutral='\033[0m'
 
+INVENTORY_PATH=${INVENTORY_PATH:-"tests/inventory"}
+
 root_role_dir="/etc/ansible/roles/role_to_test"
 root_test_dir="${root_role_dir}/tests"
 playbook="${root_test_dir}/playbook.yml"
-inventory="${root_test_dir}/inventory"
+inventory="${root_role_dir}/${INVENTORY_PATH}"
 requirements="${root_test_dir}/requirements.yml"
 run_tests="${root_test_dir}/run_tests.sh"
 play_cmd="ansible-playbook -i ${inventory}"

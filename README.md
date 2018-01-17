@@ -18,7 +18,7 @@ docker-compose -f tests/docker-compose.yml up -d
 docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
   -v /var/run/docker.sock:/var/run/docker.sock:ro \
   -v $PWD/dep_roles:/root/.ansible/roles \
-  thomasjpfan/ansible-docker-runner all
+  thomasjpfan/ansible-docker-runner:py2 all
 ```
 
 1. Notice that `tests/playbook.yml` names the role under testing: `role_to_test`.
@@ -51,3 +51,4 @@ And run the commands prefixed with `cli`, for example: `cli lint`.
 
 - Setting `ANSIBLE_PLAYBOOK_ARGS` in the env will be passed along to the `ansible-playbook` cli.
 - Any arguments after the command will be passed along to the `ansible-playbook` cli and overwrites `ANSIBLE_PLAYBOOK_ARGS`
+- Setting `INVENTORY_PATH` will change the default inventory path: `tests/inventory`.
