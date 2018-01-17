@@ -17,8 +17,8 @@ docker-compose -f tests/docker-compose.yml up -d
 ```bash
 docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
   -v /var/run/docker.sock:/var/run/docker.sock:ro \
-  -v $PWD/dep_roles:/root/.ansible/roles \
-  thomasjpfan/ansible-docker-runner:py2 all
+  -v $PWD/dep_roles:/root/.ansible/roles -t \
+  thomasjpfan/ansible-docker-runner:py2 cli all
 ```
 
 1. Notice that `tests/playbook.yml` names the role under testing: `role_to_test`.
