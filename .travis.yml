@@ -28,8 +28,7 @@ script:
   - >
     docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
       -v /var/run/docker.sock:/var/run/docker.sock:ro -t \
-      $DOCKER_HUB_REPO:$TRAVIS_BRANCH cli all \
-      -e ansible_python_interpreter=/usr/bin/python$PY_VERSION
+      $DOCKER_HUB_REPO:$TRAVIS_BRANCH cli all
 after_script:
   - docker-compose -f tests/docker-compose.yml down
 

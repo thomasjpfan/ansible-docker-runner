@@ -2,6 +2,6 @@ version: "3.2"
 
 services:
   server1:
-    image: thomasjpfan/ubuntu-python-systemd:16.04-py${PY_VERSION:-2}
+    image: thomasjpfan/ubuntu-python-systemd:16.04-py3
   server2:
-    image: thomasjpfan/ubuntu-python-systemd:16.04-py${PY_VERSION:-2}
+    image: thomasjpfan/ubuntu-python-systemd:16.04-py3
