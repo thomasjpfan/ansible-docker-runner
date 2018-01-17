@@ -24,7 +24,7 @@ lint() {
 	ansible-lint "$playbook"
 }
 
-syntax_check() {
+run_syntax_check() {
 	printf "${green}Checking ansible playbook syntax-check${neutral}\\n"
 	if [ ! -z "$@" ]; then
 		cmd="${play_cmd} $* ${playbook} --syntax-check"
@@ -96,7 +96,7 @@ fi
 case "$cmd" in
 	all)
 		lint
-		syntax_check "$args"
+		run_syntax_check "$args"
 		requirements
 		converge "$args"
 		idempotence "$args"
@@ -106,7 +106,7 @@ case "$cmd" in
 		lint
 		;;
 	syntax_check)
-		syntax_check "$args"
+		run_syntax_check "$args"
 		;;
 	requirements)
 		requirements
