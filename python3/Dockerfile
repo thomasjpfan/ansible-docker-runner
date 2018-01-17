@@ -1,4 +1,4 @@
-FROM docker:17.12.0-ce
+FROM docker:18.01.0-ce
 
 ENV ANSIBLE_VERSION 2.4.2.0
 ENV TESTINFRA_VERSION 1.10.1
@@ -19,4 +19,5 @@ COPY cli.sh /usr/local/bin/cli
 
 WORKDIR /etc/ansible/roles/role_to_test
 
-ENTRYPOINT ["cli"]
+ENTRYPOINT [""]
+CMD ["cli"]
