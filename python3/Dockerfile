@@ -7,7 +7,7 @@ ENV ANSIBLE_LINT_VERSION 3.4.20
 RUN apk --update add sudo python3 py3-pip openssl ca-certificates && \
     apk --update add --virtual build-dependencies \
     python3-dev libffi-dev openssl-dev build-base && \
-    pip3 install --upgrade pip cffi cryptography && \
+    pip3 install --upgrade pip cffi && \
     pip3 install ansible==${ANSIBLE_VERSION} \
     testinfra==${TESTINFRA_VERSION} \
     ansible-lint==${ANSIBLE_LINT_VERSION} && \
