@@ -20,25 +20,30 @@ play_cmd="ansible-playbook -i ${inventory}"
 
 lint() {
 	printf "${green}Using ansible-lint to check syntax${neutral}\\n"
+	echo ansible-lint "$playbook"
 	ansible-lint "$playbook"
 }
 
 syntax_check() {
 	printf "${green}Checking ansible playbook syntax-check${neutral}\\n"
 	if [ ! -z "$@" ]; then
-		$play_cmd "$@" "$playbook" --syntax-check
+		cmd="${play_cmd} $* ${playbook} --syntax-check"
 	else
-		$play_cmd "$playbook" --syntax-check
+		cmd="${play_cmd} ${playbook} --syntax-check"
 	fi
+	echo "$cmd"
+	$cmd
 }
 
 converge() {
 	printf "${green}Running full playbook${neutral}\\n"
 	if [ ! -z "$@" ]; then
-		$play_cmd "$@" "$playbook"
+		cmd="${play_cmd} $* ${playbook}"
 	else
-		$play_cmd "$playbook"
+		cmd="${play_cmd} ${playbook}"
 	fi
+	echo "$cmd"
+	$cmd
 }
 
 run_test() {
@@ -51,7 +56,7 @@ idempotence() {
 	idempotence="$(mktemp)"
 
 	if [ ! -z "$@" ]; then
-		cmd="${play_cmd} ${@} ${playbook}"
+		cmd="${play_cmd} $* ${playbook}"
 	else
 		cmd="${play_cmd} ${playbook}"
 	fi
