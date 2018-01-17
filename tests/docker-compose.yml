@@ -7,7 +7,7 @@ services:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
   server2:
-    image: thomasjpfan/ubuntu-python-systemd:16.04-py3
+    image: thomasjpfan/ubuntu-python-systemd:16.04-py2
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
