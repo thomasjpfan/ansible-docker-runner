@@ -77,7 +77,7 @@ requirements() {
 usage() {
 	echo "usage: $0 (lint|syntax-check|requirments|converge|idempotence|run_test|all)"
 	echo "  lint: Runs ansible-lint on tests/playbook.yml"
-	echo "  syntax-check: Runs ansible-playbook --syntax-check on tests/playbook.yml"
+	echo "  syntax_check: Runs ansible-playbook --syntax-check on tests/playbook.yml"
 	echo "  requirements: Imports requirements from ansible galaxy"
 	echo "  converge: Runs tests/playbook.yml"
 	echo "  idempotence: Runs ansible-playbook again and fails if anything changes"
@@ -105,7 +105,7 @@ case "$cmd" in
 	lint)
 		lint
 		;;
-	syntax-check)
+	syntax_check)
 		syntax_check "$args"
 		;;
 	requirements)
