@@ -25,7 +25,8 @@ before_install:
 
 script:
   - docker image build -t $DOCKER_HUB_REPO:$TRAVIS_BRANCH -f python$PY_VERSION/Dockerfile .
-  - docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
+  - >
+    docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
       -v /var/run/docker.sock:/var/run/docker.sock:ro \
       --network tests_over -ti \
       $DOCKER_HUB_REPO:$TRAVIS_BRANCH cli all
