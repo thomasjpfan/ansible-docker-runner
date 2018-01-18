@@ -9,3 +9,8 @@
   user:
     name: deploy
     group: hello
+
+- name: Move test file
+  copy:
+    src: "{{ move_test_file }}"
+    dest: "/test.txt"
