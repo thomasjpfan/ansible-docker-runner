@@ -25,9 +25,9 @@ before_install:
 
 script:
   - docker image build -t $DOCKER_HUB_REPO:$TRAVIS_BRANCH -f python$PY_VERSION/Dockerfile .
-  - >
-    docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
-      -v /var/run/docker.sock:/var/run/docker.sock:ro -t \
+  - docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
+      --network tests_over \
+      -v /var/run/docker.sock:/var/run/docker.sock:ro -it \
       $DOCKER_HUB_REPO:$TRAVIS_BRANCH cli all
 after_script:
   - docker-compose -f tests/docker-compose.yml down
@@ -44,4 +44,8 @@ after_success:
       tag="docker-${docker_v}-py${PY_VERSION}-ansible-${ansible_v}-lint-${lint_v}-testinfra-${testinfra_v}"
       docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:$tag
       docker push $DOCKER_HUB_REPO:$tag
+      if [ "$PY_VERSION" == "2" ]; then
+        docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:latest
+        ddocker push $DOCKER_HUB_REPO:latest
+      fi
     fi

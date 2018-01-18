@@ -4,10 +4,17 @@ services:
   server1:
     image: thomasjpfan/ubuntu-python-systemd:16.04-py3
     privileged: true
+    networks:
+      - over
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
   server2:
     image: thomasjpfan/ubuntu-python-systemd:16.04-py3
     privileged: true
+    networks:
+      - over
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+networks:
+  over:

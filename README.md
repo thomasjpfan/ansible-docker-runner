@@ -17,8 +17,8 @@ docker-compose -f tests/docker-compose.yml up -d
 ```bash
 docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
   -v /var/run/docker.sock:/var/run/docker.sock:ro \
-  -v $PWD/dep_roles:/root/.ansible/roles -t \
-  thomasjpfan/ansible-docker-runner:py2 cli all
+  -v $PWD/dep_roles:/root/.ansible/roles -ti \
+  thomasjpfan/ansible-docker-runner cli all
 ```
 
 1. Notice that `tests/playbook.yml` names the role under testing: `role_to_test`.
@@ -38,7 +38,7 @@ docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
 For local development, one can start a shell:
 
 ```bash
-docker run --rm -v $PWD:/etc/ansible/roles/role_to_test
+docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
   --name runner \
   -v /var/run/docker.sock:/var/run/docker.sock:ro \
   -v $PWD/dep_roles:/root/.ansible/roles -ti \
