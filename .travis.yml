@@ -1,3 +1,5 @@
+---
+
 sudo: required
 
 services:
@@ -21,6 +23,8 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
+
+before_script:
   - docker-compose -f tests/docker-compose.yml up -d
 
 script:
@@ -29,6 +33,7 @@ script:
     docker run --rm -v $PWD:/etc/ansible/roles/role_to_test \
       -v /var/run/docker.sock:/var/run/docker.sock:ro -ti \
       $DOCKER_HUB_REPO:$TRAVIS_BRANCH cli all
+
 after_script:
   - docker-compose -f tests/docker-compose.yml down
 
