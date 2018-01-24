@@ -10,7 +10,8 @@ RUN apk --update add sudo python3 py3-pip openssl ca-certificates && \
     pip3 install --upgrade pip cffi && \
     pip3 install ansible==${ANSIBLE_VERSION} \
     testinfra==${TESTINFRA_VERSION} \
-    ansible-lint==${ANSIBLE_LINT_VERSION} && \
+    ansible-lint==${ANSIBLE_LINT_VERSION} \
+    pyOpenSSL && \
     apk del build-dependencies && \
     rm -rf /var/cache/apk/* && \
     mkdir -p /etc/ansible/roles/role_to_test
