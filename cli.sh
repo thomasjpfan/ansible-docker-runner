@@ -11,13 +11,13 @@ neutral='\033[0m'
 INVENTORY_PATH=${INVENTORY_PATH:-"tests/inventory"}
 PLAYBOOK_PATH=${PLAYBOOK_PATH:-"tests/playbook.yml"}
 REQUIREMENTS_PATH=${REQUIREMENTS_PATH:-"requirements.yml"}
-TESTS_PATH=${TESTS_PATH:-"tests/run_tests.sh"}
+TEST_PATH=${TEST_PATH:-"tests/run_tests.sh"}
 
 root_role_dir="/etc/ansible/roles/role_to_test"
 playbook="${root_role_dir}/${PLAYBOOK_PATH}"
 inventory="${root_role_dir}/${INVENTORY_PATH}"
 requirements="${root_role_dir}/${REQUIREMENTS_PATH}"
-run_tests="${root_role_dir}/${TESTS_PATH}"
+run_tests="${root_role_dir}/${TEST_PATH}"
 play_cmd="ansible-playbook -i ${inventory}"
 
 lint() {
