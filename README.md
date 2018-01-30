@@ -51,4 +51,7 @@ And run the commands prefixed with `cli`, for example: `cli lint`.
 
 - Setting `ANSIBLE_PLAYBOOK_ARGS` in the env will be passed along to the `ansible-playbook` cli.
 - Any arguments after the command will be passed along to the `ansible-playbook` cli and overwrites `ANSIBLE_PLAYBOOK_ARGS`
-- Setting `INVENTORY_PATH` will change the default inventory path: `tests/inventory`.
+- Setting `INVENTORY_PATH` changes the default inventory path: `tests/inventory`.
+- Setting `PLAYBOOK_PATH` changes the default playbook path: `tests/playbook.yml`.
+- Setting `REQUIREMENTS_PATH` changes the default requirements path: `requirements.yml`.
+- Settings `TEST_PATH` changes the default test shell path: `tests/run_tests.sh`.
