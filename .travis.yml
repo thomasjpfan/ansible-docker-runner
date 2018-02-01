@@ -39,18 +39,20 @@ after_script:
 
 after_success:
   - >
-    if [ "$TRAVIS_BRANCH" == "master" ]; then
-      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-      docker_file="python${PY_VERSION}/Dockerfile"
-      docker_v=$(grep "FROM docker" $docker_file | cut -d ':' -f2)
-      ansible_v=$(grep "ENV ANSIBLE_VERSION" $docker_file | awk '{{ print $3 }}')
-      lint_v=$(grep "ENV ANSIBLE_LINT_VERSION" $docker_file | awk '{{ print $3 }}')
-      testinfra_v=$(grep "ENV TESTINFRA_VERSION" $docker_file | awk '{{ print $3 }}')
-      tag="docker-${docker_v}-py${PY_VERSION}-ansible-${ansible_v}-lint-${lint_v}-testinfra-${testinfra_v}"
-      docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:$tag
-      docker push $DOCKER_HUB_REPO:$tag
-      if [ "$PY_VERSION" == "2" ]; then
-        docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:latest
-        ddocker push $DOCKER_HUB_REPO:latest
+    if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+      if [ "$TRAVIS_BRANCH" == "master" ]; then
+        docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+        docker_file="python${PY_VERSION}/Dockerfile"
+        docker_v=$(grep "FROM docker" $docker_file | cut -d ':' -f2)
+        ansible_v=$(grep "ENV ANSIBLE_VERSION" $docker_file | awk '{{ print $3 }}')
+        lint_v=$(grep "ENV ANSIBLE_LINT_VERSION" $docker_file | awk '{{ print $3 }}')
+        testinfra_v=$(grep "ENV TESTINFRA_VERSION" $docker_file | awk '{{ print $3 }}')
+        tag="docker-${docker_v}-py${PY_VERSION}-ansible-${ansible_v}-lint-${lint_v}-testinfra-${testinfra_v}"
+        docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:$tag
+        docker push $DOCKER_HUB_REPO:$tag
+        if [ "$PY_VERSION" == "2" ]; then
+          docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:latest
+          ddocker push $DOCKER_HUB_REPO:latest
+        fi
       fi
     fi
