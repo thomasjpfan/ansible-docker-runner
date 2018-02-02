@@ -3,8 +3,7 @@
 PY_VERSION ?= 3
 TAG ?= py$(PY_VERSION)
 CLI_COMMAND := docker run --rm -v $(PWD):/etc/ansible/roles/role_to_test \
-	--name runner -v /var/run/docker.sock:/var/run/docker.sock:ro \
-	-v $(PWD)/dep_roles:/root/.ansible/roles
+	--name runner -v /var/run/docker.sock:/var/run/docker.sock:ro
 DOCKER_HUB_REPO ?= thomasjpfan/ansible-docker-runner
 
 build:
