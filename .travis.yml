@@ -44,7 +44,7 @@ after_success:
         docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
         docker_file="python${PY_VERSION}/Dockerfile"
         docker_v=$(grep "FROM docker" $docker_file | cut -d ':' -f2)
-        version=$(grep "LABEL version" redis-look/Dockerfile | cut -d "=" -f2 | tr -d '"')
+        version=$(grep "LABEL version" $docker_file | cut -d "=" -f2 | tr -d '"')
 
         tag="${version}-docker-${docker_v}-py${PY_VERSION}"
         docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:$tag
