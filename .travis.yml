@@ -51,7 +51,7 @@ after_success:
         docker push $DOCKER_HUB_REPO:$tag
         if [ "$PY_VERSION" == "2" ]; then
           docker tag $DOCKER_HUB_REPO:$TRAVIS_BRANCH $DOCKER_HUB_REPO:latest
-          ddocker push $DOCKER_HUB_REPO:latest
+          docker push $DOCKER_HUB_REPO:latest
         fi
       fi
     fi
