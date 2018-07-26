@@ -1,10 +1,10 @@
-FROM docker:18.01.0-ce
+FROM docker:18.06.0-ce
 
-LABEL version="1.0.0"
+LABEL version="1.1.0"
 
-ENV ANSIBLE_VERSION 2.4.2.0
-ENV TESTINFRA_VERSION 1.10.1
-ENV ANSIBLE_LINT_VERSION 3.4.20
+ENV ANSIBLE_VERSION 2.6.1
+ENV TESTINFRA_VERSION 1.14.1
+ENV ANSIBLE_LINT_VERSION 3.4.23
 
 RUN apk --update add sudo python3 py3-pip openssl ca-certificates \
     openssh-client && \
